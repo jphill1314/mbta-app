@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -12,6 +15,7 @@ android {
     namespace = "com.jphill.mbtadepatureboard"
     compileSdk = 34
 
+
     defaultConfig {
         applicationId = "com.jphill.mbtadepatureboard"
         minSdk = 24
@@ -20,6 +24,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProperties = Properties()
+        localProperties.load(FileInputStream(project.rootProject.file("local.properties")))
+        buildConfigField(
+            type = "String",
+            name = "MBTA_API_KEY",
+            value = localProperties["mbta_api_key"].toString(),
+        )
     }
 
     buildTypes {
@@ -40,6 +52,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

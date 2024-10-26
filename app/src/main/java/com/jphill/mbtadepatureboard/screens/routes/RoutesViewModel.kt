@@ -17,11 +17,18 @@ class RoutesViewModel @Inject constructor(
     fun fetchRoutes(types: List<Int>) {
         viewModelScope.launch {
             val response = mbtaService.getRoutes(
-                filterType = types,
+                filterType = buildFilterString(types),
             )
             val routes = response.data.map { it.toLocal() }
             updateState { copy(routes = routes) }
         }
+    }
+
+    private fun buildFilterString(types: List<Int>): String {
+        return types.joinToString(
+            separator = ",",
+            transform = { it.toString() },
+        )
     }
 }
 

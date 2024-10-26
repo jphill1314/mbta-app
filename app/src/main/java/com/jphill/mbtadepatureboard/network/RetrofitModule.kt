@@ -1,10 +1,10 @@
 package com.jphill.mbtadepatureboard.network
 
-import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -14,16 +14,24 @@ object RetrofitModule {
 
     @Provides
     fun providesMoshiConverterFactory(): MoshiConverterFactory {
-//        val moshi = Moshi.Builder().addLast()
         return MoshiConverterFactory.create()
+    }
+
+    @Provides
+    fun providesOkHttp(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(ApiKeyInterceptor())
+            .build()
     }
 
     @Provides
     fun provideRetrofit(
         converterFactory: MoshiConverterFactory,
+        okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api-v3.mbta.com/")
+            .client(okHttpClient)
             .addConverterFactory(converterFactory)
             .build()
     }

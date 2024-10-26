@@ -25,7 +25,7 @@ interface MBTAService {
     suspend fun getRoutes(
         @Query("page[offset]") pageOffset: Int? = null,
         @Query("page[limit]") pageLimit: Int? = null,
-        @Query("filter[type]") filterType: List<Int>? = null,
+        @Query("filter[type]") filterType: String? = null,
     ): RoutesResponse
 
     @GET("stops/")
