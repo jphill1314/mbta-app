@@ -16,12 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jphill.mbtadepatureboard.Predictions
 import com.jphill.mbtadepatureboard.data.Stop
 import com.jphill.mbtadepatureboard.ui.theme.MBTAScreen
 
 @Composable
 fun StopsScreen(
     routeId: String,
+    onStopSelected: (Predictions) -> Unit,
     viewModel: StopsViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
@@ -33,7 +35,14 @@ fun StopsScreen(
     MBTAScreen {
         LazyColumn {
             items(viewState.stops) { stop ->
-                StopListItem(stop) { }
+                StopListItem(stop) {
+                    onStopSelected(
+                        Predictions(
+                            routeId = routeId,
+                            stopId = stop.id,
+                        )
+                    )
+                }
             }
         }
     }

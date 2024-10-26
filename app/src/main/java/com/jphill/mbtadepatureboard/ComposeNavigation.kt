@@ -7,16 +7,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.jphill.mbtadepatureboard.screens.home.HomeScreen
+import com.jphill.mbtadepatureboard.screens.predictions.PredictionsScreen
 import com.jphill.mbtadepatureboard.screens.routes.RoutesScreen
 import com.jphill.mbtadepatureboard.screens.stops.StopsScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object Home
+
 @Serializable
 data class Routes(val types: List<Int>)
+
 @Serializable
 data class Stops(val routeId: String)
+
+@Serializable
+data class Predictions(
+    val routeId: String,
+    val stopId: String,
+)
 
 @Composable
 fun MBTA() {
@@ -41,7 +50,17 @@ fun MBTA() {
         composable<Stops> {
             val stops = it.toRoute<Stops>()
             StopsScreen(
-                routeId = stops.routeId
+                routeId = stops.routeId,
+                onStopSelected = { predictions ->
+                    navController.navigate(predictions)
+                }
+            )
+        }
+        composable<Predictions> {
+            val prediction = it.toRoute<Predictions>()
+            PredictionsScreen(
+                stopId = prediction.stopId,
+                routeId = prediction.routeId,
             )
         }
     }

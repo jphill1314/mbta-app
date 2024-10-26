@@ -2,8 +2,10 @@ package com.jphill.mbtadepatureboard.network
 
 import com.jphill.mbtadepatureboard.data.Line
 import com.jphill.mbtadepatureboard.data.LinesResponse
+import com.jphill.mbtadepatureboard.data.PredictionsResponse
 import com.jphill.mbtadepatureboard.data.RoutesResponse
 import com.jphill.mbtadepatureboard.data.StopsResponse
+import com.jphill.mbtadepatureboard.data.TripResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -32,4 +34,18 @@ interface MBTAService {
     suspend fun getStops(
         @Query("filter[route]") filterRoute: String? = null,
     ): StopsResponse
+
+    @GET("predictions/")
+    suspend fun getPredictions(
+        @Query("page[offset]") pageOffset: Int? = null,
+        @Query("page[limit]") pageLimit: Int? = null,
+        @Query("filter[direction_id]") filterDirectionId: String? = null,
+        @Query("filter[stop]") filterStop: String? = null,
+        @Query("filter[route]") filterRoute: String? = null,
+    ): PredictionsResponse
+
+    @GET("trips/{trip_id}")
+    suspend fun getTripById(
+        @Path("trip_id") tripId: String,
+    ): TripResponse
 }

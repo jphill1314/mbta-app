@@ -15,7 +15,7 @@ data class Stop(
 
     @JsonClass(generateAdapter = true)
     data class Attributes(
-        val address: String,
+        val address: String?,
         val at_street: String?,
         val description: String?,
         val latitude: Double,
