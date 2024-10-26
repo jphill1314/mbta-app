@@ -20,16 +20,6 @@ import java.time.Period
 import java.time.temporal.ChronoUnit
 import java.util.Date
 
-data class PredictionViewItem(
-    val arrivalTime: LocalDateTime?,
-    val departureTime: LocalDateTime?,
-    val direction: String,
-)
-
-data class PredictionByDirection(
-    val direction: String,
-    val predictions: List<PredictionViewItem>,
-)
 
 @Composable
 fun PredictionsScreen(
@@ -40,30 +30,26 @@ fun PredictionsScreen(
     viewModel.fetchPredictionsForStopAndRoute(stopId, routeId)
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
     MBTAScreen {
-        LazyColumn (modifier = Modifier.padding(16.dp)) {
-            items(viewState.predictions) { predictionByDirection ->
-                PredictionGroup(viewState.currentTime, predictionByDirection)
+        LazyColumn(modifier = Modifier.padding(16.dp)) {
+            items(viewState.predictionSections) { predictionSection ->
+                PredictionSection(predictionSection)
             }
         }
     }
 }
 
 @Composable
-private fun PredictionGroup(
-    currentTime: LocalDateTime,
-    predictionsByDirection: PredictionByDirection,
+private fun PredictionSection(
+    section: PredictionSection,
 ) {
     Column {
         Text(
-            text = predictionsByDirection.direction,
-            style = MaterialTheme.typography.displayMedium,
+            text = section.headerTitle,
+            style = MaterialTheme.typography.displaySmall,
         )
 
-        predictionsByDirection.predictions.forEach { predictions ->
-            val difference = ChronoUnit.MINUTES.between(currentTime, predictions.arrivalTime)
-            Text(
-                text = "Arriving in: $difference minutes"
-            )
+        section.predictions.forEach { prediction ->
+            Text(text = prediction.displayText)
         }
     }
 }

@@ -21,7 +21,7 @@ abstract class BaseIdentityViewModel<VS>(
 
 abstract class BaseViewModel<VS, DS>(
     initialDataState: DS,
-) : ViewModel() {
+) : ViewModel(), Reducer<VS, DS> {
 
     private val dataState = MutableStateFlow(initialDataState)
     val viewState = dataState.asStateFlow()
@@ -32,6 +32,8 @@ abstract class BaseViewModel<VS, DS>(
             it.updateBlock()
         }
     }
+}
 
-    abstract fun reduce(dataState: DS): VS
+interface Reducer<VS, DS> {
+    fun reduce(dataState: DS): VS
 }

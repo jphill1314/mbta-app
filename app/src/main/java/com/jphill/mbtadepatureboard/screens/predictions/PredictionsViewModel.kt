@@ -3,6 +3,8 @@ package com.jphill.mbtadepatureboard.screens.predictions
 
 import androidx.lifecycle.viewModelScope
 import com.jphill.mbtadepatureboard.common.BaseIdentityViewModel
+import com.jphill.mbtadepatureboard.common.BaseViewModel
+import com.jphill.mbtadepatureboard.common.Reducer
 import com.jphill.mbtadepatureboard.network.MBTAService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class PredictionsViewModel @Inject constructor(
     private val mbtaService: MBTAService,
-) : BaseIdentityViewModel<PredictionsViewState>(initialViewState = PredictionsViewState()) {
+) : BaseViewModel<PredictionsViewState, PredictionsDataState>(
+    initialDataState = PredictionsDataState()
+), Reducer<PredictionsViewState, PredictionsDataState> by PredictionsReducer {
 
     private var refreshJob: Job? = null
 
@@ -67,7 +71,7 @@ class PredictionsViewModel @Inject constructor(
         val format = DateTimeFormatter.ISO_OFFSET_DATE_TIME
         val allPredictions = response.data.map { prediction ->
             val trip = mbtaService.getTripById(prediction.relationships.trip.data.id)
-            PredictionViewItem(
+            PredictionData(
                 arrivalTime = prediction.attributes.arrival_time?.let { LocalDateTime.parse(it, format) },
                 departureTime = prediction.attributes.departure_time?.let { LocalDateTime.parse(it, format) },
                 direction = trip.data.attributes.headsign,
@@ -84,8 +88,3 @@ class PredictionsViewModel @Inject constructor(
         updateState { copy(predictions = predictionsList) }
     }
 }
-
-data class PredictionsViewState(
-    val currentTime: LocalDateTime = LocalDateTime.now(),
-    val predictions: List<PredictionByDirection> = emptyList(),
-)
