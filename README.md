@@ -9,3 +9,4 @@ This is very much still a work in progress. Here are some things that I'd like t
 - Store data in a db since most of this data doesn't update frequently
 - Integrate with some mapping sdk to display the routes and live vehicle positions
 - Show info about the vehicle (ex - type 7/8/9 on green line)
+- Make the UI prettier and use api provided colors for the lines

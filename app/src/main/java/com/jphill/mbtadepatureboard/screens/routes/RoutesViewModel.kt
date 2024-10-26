@@ -1,7 +1,7 @@
 package com.jphill.mbtadepatureboard.screens.routes
 
 import androidx.lifecycle.viewModelScope
-import com.jphill.mbtadepatureboard.common.BaseViewModel
+import com.jphill.mbtadepatureboard.common.BaseIdentityViewModel
 import com.jphill.mbtadepatureboard.data.Route
 import com.jphill.mbtadepatureboard.data.toLocal
 import com.jphill.mbtadepatureboard.network.MBTAService
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RoutesViewModel @Inject constructor(
     private val mbtaService: MBTAService,
-) : BaseViewModel<RoutesViewState>(initialViewState = RoutesViewState()) {
+) : BaseIdentityViewModel<RoutesViewState>(initialViewState = RoutesViewState()) {
 
     fun fetchRoutes(types: List<Int>) {
         viewModelScope.launch {

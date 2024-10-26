@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-abstract class BaseViewModel<VS>(
+abstract class BaseIdentityViewModel<VS>(
     initialViewState: VS
 ) : ViewModel() {
 
@@ -17,4 +17,21 @@ abstract class BaseViewModel<VS>(
             it.updateBlock()
         }
     }
+}
+
+abstract class BaseViewModel<VS, DS>(
+    initialDataState: DS,
+) : ViewModel() {
+
+    private val dataState = MutableStateFlow(initialDataState)
+    val viewState = dataState.asStateFlow()
+        .mapState(::reduce)
+
+    internal fun updateState(updateBlock: DS.() -> DS) {
+        dataState.update {
+            it.updateBlock()
+        }
+    }
+
+    abstract fun reduce(dataState: DS): VS
 }

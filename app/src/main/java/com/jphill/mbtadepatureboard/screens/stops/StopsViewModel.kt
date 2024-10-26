@@ -1,8 +1,7 @@
 package com.jphill.mbtadepatureboard.screens.stops
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jphill.mbtadepatureboard.common.BaseViewModel
+import com.jphill.mbtadepatureboard.common.BaseIdentityViewModel
 import com.jphill.mbtadepatureboard.data.Stop
 import com.jphill.mbtadepatureboard.network.MBTAService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StopsViewModel @Inject constructor(
     private val mbtaService: MBTAService,
-) : BaseViewModel<StopsViewState>(initialViewState = StopsViewState()) {
+) : BaseIdentityViewModel<StopsViewState>(initialViewState = StopsViewState()) {
 
     fun fetchStopsForRoute(routeId: String) {
         viewModelScope.launch {
