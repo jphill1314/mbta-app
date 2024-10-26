@@ -26,7 +26,7 @@ data class Prediction(
         val schedule_relationship: String?,
         val status: String?,
         val stop_sequence: Int,
-        val update_type: String,
+        val update_type: String?,
     )
 
     @JsonClass(generateAdapter = true)
@@ -40,7 +40,7 @@ data class Prediction(
 
     @JsonClass(generateAdapter = true)
     data class RelationData(
-        val data: Data,
+        val data: Data?,
     ) {
         @JsonClass(generateAdapter = true)
         data class Data(val id: String)

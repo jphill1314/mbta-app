@@ -70,7 +70,7 @@ class PredictionsViewModel @Inject constructor(
 
         val format = DateTimeFormatter.ISO_OFFSET_DATE_TIME
         val allPredictions = response.data.map { prediction ->
-            val trip = mbtaService.getTripById(prediction.relationships.trip.data.id)
+            val trip = mbtaService.getTripById(prediction.relationships.trip.data!!.id)
             PredictionData(
                 arrivalTime = prediction.attributes.arrival_time?.let { LocalDateTime.parse(it, format) },
                 departureTime = prediction.attributes.departure_time?.let { LocalDateTime.parse(it, format) },

@@ -48,9 +48,13 @@ object PredictionsReducer : Reducer<PredictionsViewState, PredictionsDataState> 
         currentTime: LocalDateTime,
         prediction: PredictionData,
     ): String? {
-        val arrivalDifference = ChronoUnit.MINUTES.between(currentTime, prediction.arrivalTime)
+        val arrivalDifference = prediction.arrivalTime?.let {
+            ChronoUnit.MINUTES.between(currentTime, it)
+        } ?: -1
         return if (arrivalDifference <= 0) {
-            val departureDifference = ChronoUnit.MINUTES.between(currentTime, prediction.departureTime)
+            val departureDifference = prediction.departureTime?.let {
+                ChronoUnit.MINUTES.between(currentTime, it)
+            } ?: -1
             when {
                 departureDifference == 0L -> "Departing now"
                 departureDifference > 0L -> "Departing in $departureDifference minutes"
