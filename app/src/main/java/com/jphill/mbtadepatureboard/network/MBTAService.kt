@@ -3,6 +3,7 @@ package com.jphill.mbtadepatureboard.network
 import com.jphill.mbtadepatureboard.data.Line
 import com.jphill.mbtadepatureboard.data.LinesResponse
 import com.jphill.mbtadepatureboard.data.RoutesResponse
+import com.jphill.mbtadepatureboard.data.StopsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -26,4 +27,9 @@ interface MBTAService {
         @Query("page[limit]") pageLimit: Int? = null,
         @Query("filter[type]") filterType: List<Int>? = null,
     ): RoutesResponse
+
+    @GET("stops/")
+    suspend fun getStops(
+        @Query("filter[route]") filterRoute: String? = null,
+    ): StopsResponse
 }

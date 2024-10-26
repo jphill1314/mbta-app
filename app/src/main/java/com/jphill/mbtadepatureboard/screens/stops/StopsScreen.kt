@@ -1,4 +1,4 @@
-package com.jphill.mbtadepatureboard.screens.routes
+package com.jphill.mbtadepatureboard.screens.stops
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,33 +16,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.jphill.mbtadepatureboard.data.Route
+import com.jphill.mbtadepatureboard.data.Stop
 import com.jphill.mbtadepatureboard.ui.theme.MBTAScreen
 
 @Composable
-fun RoutesScreen(
-    types: List<Int>,
-    onRouteClick: (String) -> Unit,
-    viewModel: RoutesViewModel = hiltViewModel(),
+fun StopsScreen(
+    routeId: String,
+    viewModel: StopsViewModel = hiltViewModel(),
 ) {
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    LaunchedEffect(types) { viewModel.fetchRoutes(types) }
+
+    LaunchedEffect(routeId) {
+        viewModel.fetchStopsForRoute(routeId)
+    }
 
     MBTAScreen {
         LazyColumn {
-            items(viewState.routes) { route ->
-                RouteItem(
-                    route = route,
-                    onClick = { onRouteClick(route.id) },
-                )
+            items(viewState.stops) { stop ->
+                StopListItem(stop) { }
             }
         }
     }
 }
 
 @Composable
-private fun RouteItem(
-    route: Route,
+private fun StopListItem(
+    stop: Stop,
     onClick: () -> Unit,
 ) {
     Column {
@@ -52,11 +51,10 @@ private fun RouteItem(
                 .padding(16.dp)
         ) {
             Text(
-                text = route.name,
+                text = stop.attributes.name,
             )
         }
 
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
     }
 }
-
