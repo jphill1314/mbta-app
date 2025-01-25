@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.hilt)
     implementation(libs.kotlin.serialization)
     implementation(libs.androidx.hilt.compose.navigation)
+    implementation(libs.play.services.location)
 
     kapt(libs.moshi.kotlin.kapt)
     kapt(libs.hilt.compiler)

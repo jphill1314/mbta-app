@@ -28,11 +28,18 @@ interface MBTAService {
         @Query("page[offset]") pageOffset: Int? = null,
         @Query("page[limit]") pageLimit: Int? = null,
         @Query("filter[type]") filterType: String? = null,
+        @Query("filter[id]") filterId: String? = null,
     ): RoutesResponse
 
     @GET("stops/")
     suspend fun getStops(
         @Query("filter[route]") filterRoute: String? = null,
+        @Query("filter[route_type]") filterRouteType: String? = null,
+        @Query("filter[latitude]") filterLatitude: String? = null,
+        @Query("filter[longitude]") filterLongitude: String? = null,
+        @Query("filter[radius]") filterRadius: Double? = null,
+        @Query("sort") sort: String? = null,
+        @Query("page[limit]") pageLimit: Int? = null,
     ): StopsResponse
 
     @GET("predictions/")
